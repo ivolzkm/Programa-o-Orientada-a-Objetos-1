@@ -20,13 +20,6 @@ Cada projeto é uma oportunidade para aplicar e reforçar o conhecimento adquiri
     Ambiente de Desenvolvimento: Eclipse
 
 
-🤝 Como Contribuir
-
-Este repositório é para meu aprendizado pessoal, mas sinta-se à vontade para inspecionar o código, sugerir melhorias ou apontar erros. Se quiser entrar em contato, pode me encontrar em [Seu LinkedIn, e-mail, etc.].
-
-📜 Licença
-
-Este projeto está sob a licença [Ex: MIT]. Para mais detalhes, veja o arquivo LICENSE.md.
 
 👨‍💻 Contato
 
