@@ -14,37 +14,31 @@ public class CotacaoDAO {
 	}
 
 	public double buscarCotacao(Cotacao cotacaoAlvo) {
-		try (
-				FileReader fr = new FileReader(arq);
-				BufferedReader br = new BufferedReader(fr)
-				) {
+		try (FileReader fr = new FileReader(arq); BufferedReader br = new BufferedReader(fr)) {
 
 			String linha;
 			while ((linha = br.readLine()) != null) {
 
 				String[] partes = linha.split("#");
 
-				if (Integer.parseInt(partes[0]) == cotacaoAlvo.getDia()) {
-					String moedaBuscada = cotacaoAlvo.getMoeda();
+				if (Integer.parseInt(partes[0].trim()) == cotacaoAlvo.getDia()) {
+					String moedaBuscada = cotacaoAlvo.getMoeda().trim();
 
-					//dolar
-					if (moedaBuscada.equals("dolar")) {
+					// retornar o valor do dolar, substituindo "," por "." e retornando um double.
+					if (moedaBuscada.equalsIgnoreCase("dolar")) {
 						return Double.parseDouble(partes[2].replace(",", "."));
 
-						//euro
-					} else if (moedaBuscada.equals("euro")) {
+						// retornar o valor do euro, substiutindo "," por "." e retornando um double.
+					} else if (moedaBuscada.equalsIgnoreCase("euro")) {
 						return Double.parseDouble(partes[4].replace(",", "."));
 					}
 
 				}
-				}}
-			catch (Exception e) {
-				e.printStackTrace();
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return 0.0;
 
-		}
+	}
 }
-
-	
-
