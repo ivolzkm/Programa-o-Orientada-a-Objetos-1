@@ -1,50 +1,67 @@
 package dao;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.annotation.processing.FilerException;
 import javax.swing.JOptionPane;
-
 import model.Pedido;
 
 public class PedidoDAO {
 
-	// O DAO (Data Access Object) possui como função mediar o acesso entre o
-	// programa e os dados, selecionando os dados de escrita ou/e leitura.
+    private File arq = new File("pedidos.txt");
+    private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
-	File arq = new File("pedidos.txt");
+    public void salvarPedido(Pedido p) {
+        try (FileWriter fw = new FileWriter(arq, true);
+             BufferedWriter bw = new BufferedWriter(fw)) {
+            
+            String linha = p.getIDpedido() + "#" +
+                           p.getMatriculaSolicitante() + "#" +
+                           sdf.format(p.getDataPedido()) + "#" +
+                           p.getCategoria() + "#" +
+                           p.getDescricaoPedido() + "#" +
+                           p.getPredio() + "#" +
+                           p.getSala() + "#" +
+                           p.getPatrimonio();
+            
+            bw.write(linha);
+            bw.newLine();
+            
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Erro ao salvar: " + e.getMessage());
+        }
+    }
 
-	// Lógica para a escrita no arquivo "pedidos.txt"
-	public Pedido buscaPedido() {
-		try(FileWriter fw = new FileWriter(arq);
-				BufferedWriter bw = new BufferedWriter(fw);
-				){
-			String linhas[]= null;
-			String[] partes; //Vetor Partes[]= linhas.split ("#");	
-			
-			//partes[0]=ID, partes[1]=matricula, partes [2] = nome , partes[3] = data ; partes [4] = categora; 
-			//partes [5] = descricaopedido; partes[6]= predio ; partes[7] = sala; partes[8]=patrimonio
-			
-			while(bw!=null){
-				//loop para a escrita de dados no arquivo.			
-			}
+    public List<Pedido> listarTodos() {
+        List<Pedido> lista = new ArrayList<>();
+        if (!arq.exists()) return lista;
 
-			//Exceções
-		} catch (FilerException e) {
-			JOptionPane.showMessageDialog("Erro no registro.", e);
-		} catch (IOException e1) {
-			JOptionPane.showMessageDialog("Erro no registro.", e1);
-		}catch (Exception e2) {
-			JOptionPane.showMessageDialog("Erro no registro.", e2);
-		}  {
-
-		}
-		return null;
-
-	}
+        try (FileReader fr = new FileReader(arq);
+             BufferedReader br = new BufferedReader(fr)) {
+            
+            String linha;
+            while ((linha = br.readLine()) != null) {
+                String[] partes = linha.split("#");
+                Pedido p = new Pedido();
+                p.setIDpedido(Integer.parseInt(partes[0]));
+                p.setMatriculaSolicitante(partes[1]);
+                p.setDataPedido(sdf.parse(partes[2]));
+                p.setCategoria(partes[3]);
+                p.setDescricaoPedido(partes[4]);
+                p.setPredio(partes[5]);
+                p.setSala(partes[6]);
+                p.setPatrimonio(partes[7]);
+                lista.add(p);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Erro ao ler: " + e.getMessage());
+        }
+        return lista;
+    }
 }

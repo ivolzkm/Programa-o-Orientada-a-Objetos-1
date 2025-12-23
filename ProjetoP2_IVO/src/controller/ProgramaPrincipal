@@ -1,0 +1,14 @@
+import view.SistemaDePedidosInternos;
+import controller.PedidoController;
+
+public class ProgramaPrincipal {
+    public static void main(String[] args) {
+        SistemaDePedidosInternos view = new SistemaDePedidosInternos();
+        PedidoController controller = new PedidoController(view);
+        
+        view.getBtnSalvar().addActionListener(controller);
+        view.getBtnLimpar().addActionListener(controller);
+        
+        view.setVisible(true);
+    }
+}
